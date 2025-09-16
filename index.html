@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Treasure Hunt Station</title>
+  <title>Netsec QR Station</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
     .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     h1 { font-size: 1.5rem; }
     .hidden { display: none; }
-    button { padding: 10px 20px; border: none; background: #007bff; color: white; border-radius: 8px; cursor: pointer; }
+    button { padding: 10px 20px; border: none; background: #007bff; color: white; border-radius: 8px; cursor: pointer; margin-top: 10px; }
     button:hover { background: #0056b3; }
     input { padding: 8px; width: 100%; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Treasure Hunt Station</h1>
+    <h1>Netsec QR Station</h1>
     <div id="station-form">
       <label>Enter your Name/ID:</label>
       <input type="text" id="playerName" placeholder="Your name...">
@@ -73,12 +73,16 @@
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 4).toUpperCase();
     }
 
+    // Show previous code field immediately if station > 1
+    if (stationNumber > 1) {
+      document.getElementById("prev-code-section").classList.remove("hidden");
+    }
+
     async function startStation() {
       const name = document.getElementById("playerName").value.trim();
       if (!name) { alert("Please enter your name/ID"); return; }
 
       if (stationNumber > 1) {
-        document.getElementById("prev-code-section").classList.remove("hidden");
         const enteredCode = document.getElementById("prevCode").value.trim();
         const expectedCode = "STN" + (stationNumber-1) + "-" + await generateHash(name + (stationNumber-1));
         if (enteredCode !== expectedCode) {
