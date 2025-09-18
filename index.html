@@ -69,9 +69,9 @@
     },
     4: {
       title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
-              <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
-      successMessage: "YOU HAVE BREACHED THE SYSTEM, ${name}! <br> Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code."
-    }
+          <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
+  successMessage: "YOU HAVE BREACHED THE SYSTEM, {name}! <br> Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code."
+}
   };
 
     // Questions per station (you can customize these)
@@ -238,30 +238,42 @@
       }
     }
 
-    function showCode(name) {
-      const successMsg = stationConfig[stationNumber].successMessage;
-      let content = `<h2 class="text-xl font-bold">${successMsg}</h2>`;
+    // safe HTML escape
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
-      // Conditionally display the breach code and copy button for stations 1, 2, and 3
-      if (stationNumber < 4) { // This ensures it's shown for station 1, 2, 3
-        const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
-        content += `
-          <p class="mt-2 flex items-center">Copy the Breach Code to Advance:
-            <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2">${code}</span>
-            <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-              <!-- Copy Icon (example SVG) -->
-              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
-              </svg>
-              <!-- Optional: "Copied!" text overlay -->
-              <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
-            </button>
-          </p>
-        `;
-      }
+function showCode(name) {
+  // get the template from config and replace {name} with a safe, styled name
+  const template = stationConfig[stationNumber].successMessage || "";
+  const safeName = `<span class="font-semibold">${escapeHTML(name)}</span>`;
+  const successHTML = template.replace('{name}', safeName);
 
-      document.getElementById("question-container").innerHTML = content;
-    }
+  let content = `<h2 class="text-xl font-bold">${successHTML}</h2>`;
+
+  if (stationNumber < 4) {
+    const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
+    content += `
+      <p class="mt-2 flex items-center">Copy the Breach Code to Advance:
+        <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2">${code}</span>
+        <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
+          </svg>
+          <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
+        </button>
+      </p>
+    `;
+  }
+
+  document.getElementById("question-container").innerHTML = content;
+}
 
 // New function to handle copying to clipboard
 function copyToClipboard(elementId) {
