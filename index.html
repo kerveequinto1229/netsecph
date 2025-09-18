@@ -140,17 +140,19 @@
     }
 
     function showCode(name) {
-      const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
-      const successMsg = stationConfig[stationNumber].successMessage;
-      document.getElementById("question-container").innerHTML = `
-        <h2 class="text-xl font-bold">${successMsg}</h2>
-        <p class="mt-2">Copy the Breach Code to Advance: 
-          <span class="font-mono bg-gray-200 p-1">${code}</span>
-        </p>
-      `;
-    }
+  const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
+  const successMsg = stationConfig[stationNumber].successMessage;
 
-    // New function to handle copying to clipboard
+  document.getElementById("question-container").innerHTML = `
+    <h2 class="text-xl font-bold">${successMsg}</h2>
+    <p class="mt-2 flex items-center">Copy the Breach Code to Advance: 
+      <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2">${code}</span>
+      <button onclick="copyToClipboard('breachCode')" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Copy</button>
+    </p>
+  `;
+}
+
+// New function to handle copying to clipboard
 function copyToClipboard(elementId) {
   const element = document.getElementById(elementId);
   if (!element) {
@@ -184,6 +186,7 @@ function copyToClipboard(elementId) {
 
   alert("Breach Code copied to clipboard!"); // Or use a less intrusive notification
 }
+
   </script>
 </body>
 </html>
