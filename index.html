@@ -3,28 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trace and Breach</title>
+  <title>ACCESS GRANTED!</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
     .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     h1 { font-size: 1.5rem; }
     .hidden { display: none; }
-    button { padding: 10px 20px; border: none; background: #007bff; color: white; border-radius: 8px; cursor: pointer; margin-top: 10px; }
-    button:hover { background: #0056b3; }
+    button { padding: 10px 20px; border: none; background: #841013; color: white; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #581113; }
     input { padding: 8px; width: 100%; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>ACCESS GRANTED!</h2>
-    <p>Breach the Netsec x Eclypsium Portal to Register</p>
-    
+    <h2>Breach the Netsec x Eclypsium Portal to Register</h2>
     <div id="station-form">
-      <h1>STAGE 1: 	Authenticate Your Identity to Begin the Breach.</h1>
-      <label>Enter your Name/ID:</label>
+      <h1>STAGE 1: 	<br>Authenticate Your Identity to Begin the Breach.</h1>
+      <label>Enter your Full Name:</label>
       <input type="text" id="playerName" placeholder="Your name...">
       <div id="prev-code-section" class="hidden">
-        <label>Enter previous station code:</label>
+        <label>Enter Breach Code:</label>
         <input type="text" id="prevCode" placeholder="Previous code...">
       </div>
       <button onclick="startStation()">Start</button>
@@ -39,6 +37,13 @@
       <h2>Congratulations!</h2>
       <p>Your unlock code for the next station:</p>
       <h3 id="unlock-code"></h3>
+    </div>
+  </div>
+
+  <div id="station4-result-section" class="hidden">
+      <h2>SYSTEM BREACHED!</h2>
+      <p>ead to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.</p>
+      
     </div>
   </div>
 
@@ -83,13 +88,13 @@
 
     async function startStation() {
       const name = document.getElementById("playerName").value.trim();
-      if (!name) { alert("Please enter your name/ID"); return; }
+      if (!name) { alert("Please enter your full name"); return; }
 
       if (stationNumber > 1) {
         const enteredCode = document.getElementById("prevCode").value.trim();
         const expectedCode = "STN" + (stationNumber-1) + "-" + await generateHash(name + (stationNumber-1));
         if (enteredCode !== expectedCode) {
-          alert("Invalid previous station code!");
+          alert("Invalid breach code!");
           return;
         }
       }
@@ -113,7 +118,13 @@
             const code = "STN" + stationNumber + "-" + await generateHash(name + stationNumber);
             document.getElementById("question-section").classList.add("hidden");
             document.getElementById("unlock-code").innerText = code;
-            document.getElementById("result-section").classList.remove("hidden");
+
+            if (stationNumber = 4) {
+              document.getElementById("station4-result-section").classList.remove("hidden");
+            } else {
+              document.getElementById("result-section").classList.remove("hidden");
+            }
+            
           } else {
             alert("Wrong answer! Try again.");
           }
