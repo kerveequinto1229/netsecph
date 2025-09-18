@@ -23,7 +23,7 @@
         </label>
       </div>
 
-      <button onclick="startStation()" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Start</button>
+      <button onclick="startStation()" class="bg-red-900 text-white px-4 py-2 rounded-lg">Start</button>
     </div>
 
     <!-- Question -->
@@ -34,20 +34,20 @@
     // Station-specific configuration
     const stationConfig = {
       1: {
-        title: "Breach the Netsec x Eclypsium Portal to Check-in &#10; STEP 1: Authenticate Your Identity to Begin the Breach.",
+        title: "Breach the Netsec x Eclypsium Portal to Check-in \n STEP 1: Authenticate Your Identity to Begin the Breach.",
         successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
       },
       2: {
-        title: "Station 2: The Puzzle Chamber",
-        successMessage: "Well done! Proceed to Station 3."
+        title: "Breach the Netsec x Eclypsium Portal to Check-in \n STEP 2: Authenticate Your Identity to Begin the Breach.",
+        successMessage: "BREACH CONFIRMED <br> Layer 2 Compromised"
       },
       3: {
-        title: "Station 3: The Hidden Passage",
-        successMessage: "Nice work! You may now continue to Station 4."
+        title: "Breach the Netsec x Eclypsium Portal to Check-in \n STEP 3: Authenticate Your Identity to Begin the Breach.",
+        successMessage: "CRITICAL BREACH <br> Only 1 Gate Remain"
       },
       4: {
-        title: "Final Station: The Treasure",
-        successMessage: "Congratulations! You found the treasure 🎉"
+        title: "Breach the Netsec x Eclypsium Portal to Check-in \n FINAL GATE DETECTED \n STEP 4: Verify Credentials to Breach the Last Gate.",
+        successMessage: "SYSTEM BREACHED! <br> Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code."
       }
     };
 
@@ -55,23 +55,23 @@
     const questions = {
       1: [
         {q: "CHAIN & DECRYPT <br> What is 2+2?", options: ["3","4","5"], answer: "4"},
-        {q: "CHAIN & DECRYPT <br>Which is a fruit?", options: ["Carrot","Apple","Potato"], answer: "Apple"},
-        {q: "CHAIN & DECRYPT <br>What color is the sky?", options: ["Blue","Red","Green"], answer: "Blue"}
+        {q: "CHAIN & DECRYPT <br> Which is a fruit?", options: ["Carrot","Apple","Potato"], answer: "Apple"},
+        {q: "CHAIN & DECRYPT <br> What color is the sky?", options: ["Blue","Red","Green"], answer: "Blue"}
       ],
       2: [
-        {q: "Capital of France?", options: ["Rome","Paris","Berlin"], answer: "Paris"},
-        {q: "Which is a mammal?", options: ["Shark","Whale","Octopus"], answer: "Whale"},
-        {q: "What is 10/2?", options: ["3","5","8"], answer: "5"}
+        {q: "CHAIN & DECRYPT <br> Capital of France?", options: ["Rome","Paris","Berlin"], answer: "Paris"},
+        {q: "CHAIN & DECRYPT <br> Which is a mammal?", options: ["Shark","Whale","Octopus"], answer: "Whale"},
+        {q: "CHAIN & DECRYPT <br> What is 10/2?", options: ["3","5","8"], answer: "5"}
       ],
       3: [
-        {q: "Largest planet?", options: ["Earth","Mars","Jupiter"], answer: "Jupiter"},
-        {q: "Opposite of hot?", options: ["Warm","Cold","Cool"], answer: "Cold"},
-        {q: "How many legs does a spider have?", options: ["6","8","10"], answer: "8"}
+        {q: "CHAIN & DECRYPT <br> Largest planet?", options: ["Earth","Mars","Jupiter"], answer: "Jupiter"},
+        {q: "CHAIN & DECRYPT <br> Opposite of hot?", options: ["Warm","Cold","Cool"], answer: "Cold"},
+        {q: "CHAIN & DECRYPT <br> How many legs does a spider have?", options: ["6","8","10"], answer: "8"}
       ],
       4: [
-        {q: "Primary color?", options: ["Pink","Blue","Cyan"], answer: "Blue"},
-        {q: "How many days in a week?", options: ["5","7","9"], answer: "7"},
-        {q: "What is 3*3?", options: ["6","9","12"], answer: "9"}
+        {q: "CHAIN & DECRYPT <br> Primary color?", options: ["Pink","Blue","Cyan"], answer: "Blue"},
+        {q: "CHAIN & DECRYPT <br> How many days in a week?", options: ["5","7","9"], answer: "7"},
+        {q: "CHAIN & DECRYPT <br> What is 3*3?", options: ["6","9","12"], answer: "9"}
       ]
     };
 
