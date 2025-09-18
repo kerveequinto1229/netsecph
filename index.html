@@ -118,6 +118,7 @@
             const code = "STN" + stationNumber + "-" + await generateHash(name + stationNumber);
             document.getElementById("question-section").classList.add("hidden");
             document.getElementById("unlock-code").innerText = code;
+            document.getElementById("result-section").classList.remove("hidden");
 
             //if (stationNumber = 4) {
             //  document.getElementById("station4-result-section").classList.remove("hidden");
