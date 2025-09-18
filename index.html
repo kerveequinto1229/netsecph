@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Treasure Hunt Station</title>
+  <title>Digital Passport Check-in Guide</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
   <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-lg">
-    <h1 id="station-title" class="text-2xl font-bold mb-4">Treasure Hunt Station</h1>
+    <h1 id="station-title" class="text-2xl font-bold mb-4">Netsec Technologies Inc.</h1>
 
     <!-- Player Form -->
     <div id="station-form" class="space-y-4">
       <label class="block">
-        <span class="text-gray-700">Enter your Name/ID:</span>
+        <span class="text-gray-700">Enter your full name indicated in your digital passport:</span>
         <input id="playerName" type="text" class="mt-1 block w-full border rounded-md p-2"/>
       </label>
 
       <div id="prev-code-section" class="hidden">
         <label class="block">
-          <span class="text-gray-700">Enter previous station code:</span>
+          <span class="text-gray-700">Enter Breach Code:</span>
           <input id="prevCode" type="text" class="mt-1 block w-full border rounded-md p-2"/>
         </label>
       </div>
@@ -34,8 +34,8 @@
     // Station-specific configuration
     const stationConfig = {
       1: {
-        title: "Station 1: The Beginning",
-        successMessage: "Correct! You unlocked the path to Station 2."
+        title: "STEP 1: Authenticate Your Identity to Begin the Breach.",
+        successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
       },
       2: {
         title: "Station 2: The Puzzle Chamber",
@@ -99,13 +99,13 @@
 
     async function startStation() {
       const name = document.getElementById("playerName").value.trim();
-      if (!name) { alert("Please enter your name/ID"); return; }
+      if (!name) { alert("Please enter your full name"); return; }
 
       if (stationNumber > 1) {
         const enteredCode = document.getElementById("prevCode").value.trim();
         const expectedCode = "STN" + (stationNumber-1) + "-" + await generateHash(name + (stationNumber-1));
         if (enteredCode !== expectedCode) {
-          alert("Invalid previous station code!");
+          alert("Invalid breach code!");
           return;
         }
       }
@@ -144,7 +144,7 @@
       const successMsg = stationConfig[stationNumber].successMessage;
       document.getElementById("question-container").innerHTML = `
         <h2 class="text-xl font-bold">${successMsg}</h2>
-        <p class="mt-2">Your unlock code is: 
+        <p class="mt-2">Copy the Breach Code to Advance: 
           <span class="font-mono bg-gray-200 p-1">${code}</span>
         </p>
       `;
