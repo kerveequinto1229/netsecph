@@ -19,6 +19,8 @@
     }
     .copy-button svg {
         transition: opacity 0.3s ease;
+
+      .step-text { display: inline; }
     }
   </style>
 </head>
@@ -51,22 +53,26 @@
     // Station-specific configuration
     const stationConfig = {
       1: {
-        title: "Breach the Netsec x Eclypsium Portal to Check-in \n STEP 1: Authenticate Your Identity to Begin the Breach.",
-        successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
-      },
-      2: {
-        title: "Breach the Netsec x Eclypsium Portal to Check-in \n STEP 2: Authenticate Your Identity to Begin the Breach.",
-        successMessage: "BREACH CONFIRMED <br> Layer 2 Compromised"
-      },
-      3: {
-        title: "Breach the Netsec x Eclypsium Portal to Check-in \n STEP 3: Authenticate Your Identity to Begin the Breach.",
-        successMessage: "CRITICAL BREACH <br> Only 1 Gate Remain"
-      },
-      4: {
-        title: "Breach the Netsec x Eclypsium Portal to Check-in \n FINAL GATE DETECTED \n STEP 4: Verify Credentials to Breach the Last Gate.",
-        successMessage: "SYSTEM BREACHED! <br> Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code."
-      }
-    };
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">STEP 1: Authenticate Your Identity to Begin the Breach.</span>`,
+      successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
+    },
+    2: {
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">STEP 2: Authenticate Your Identity to Begin the Breach.</span>`,
+      successMessage: "BREACH CONFIRMED <br> Layer 2 Compromised"
+    },
+    3: {
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">STEP 3: Authenticate Your Identity to Begin the Breach.</span>`,
+      successMessage: "CRITICAL BREACH <br> Only 1 Gate Remain"
+    },
+    4: {
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
+      successMessage: "SYSTEM BREACHED! <br> Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code."
+    }
+  };
 
     // Questions per station (you can customize these)
     const questions = {
@@ -167,7 +173,7 @@
     const stationNumber = parseInt(urlParams.get("station")) || 1;
 
     // Update station title
-    document.getElementById("station-title").innerText = stationConfig[stationNumber].title;
+  document.getElementById("station-title").innerHTML = stationConfig[stationNumber].title;
 
     // Show previous code input if not station 1
     if (stationNumber > 1) {
@@ -201,19 +207,24 @@
       showQuestion(name);
     }
 
-    function showQuestion(name) {
-      const qList = questions[stationNumber];
-      const q = qList[Math.floor(Math.random() * qList.length)];
-      const container = document.getElementById("question-container");
-      container.classList.remove("hidden");
-      container.innerHTML = `
-        <h2 class="text-lg font-bold mb-2">${q.q}</h2>
-        ${q.options.map(opt => `
-          <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100"
-            onclick="checkAnswer('${opt}','${q.answer}','${name}')">${opt}</button>
-        `).join("")}
-      `;
-    }
+    // Then, when you show the question, hide all step-text spans:
+  function showQuestion(name) {
+    // HIDE step text when question is shown
+    document.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
+
+    const qList = questions[stationNumber];
+    const q = qList[Math.floor(Math.random() * qList.length)];
+    const container = document.getElementById("question-container");
+    container.classList.remove("hidden");
+    container.innerHTML = `
+      <h2 class="text-lg font-bold mb-2">${q.q}</h2>
+      ${q.options.map(opt => `
+        <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100"
+          onclick="checkAnswer('${opt}','${q.answer}','${name}')">${opt}</button>
+      `).join("")}
+    `;
+  }
+
 
     async function checkAnswer(selected, correct, name) {
       if (selected === correct) {
