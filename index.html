@@ -149,6 +149,41 @@
         </p>
       `;
     }
+
+    // New function to handle copying to clipboard
+function copyToClipboard(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    console.error("Element not found:", elementId);
+    return;
+  }
+
+  // Create a temporary textarea element to hold the text
+  const tempTextArea = document.createElement("textarea");
+  tempTextArea.value = element.textContent;
+  document.body.appendChild(tempTextArea);
+
+  // Select the text and copy it
+  tempTextArea.select();
+  document.execCommand("copy");
+
+  // Remove the temporary textarea
+  document.body.removeChild(tempTextArea);
+
+  // Optional: Provide visual feedback to the user
+  const copyButton = element.nextElementSibling; // Assuming the button is right after the span
+  if (copyButton && copyButton.tagName === 'BUTTON') {
+    const originalText = copyButton.textContent;
+    copyButton.textContent = "Copied!";
+    copyButton.disabled = true; // Disable to prevent multiple clicks
+    setTimeout(() => {
+      copyButton.textContent = originalText;
+      copyButton.disabled = false;
+    }, 2000); // Revert text and enable after 2 seconds
+  }
+
+  alert("Breach Code copied to clipboard!"); // Or use a less intrusive notification
+}
   </script>
 </body>
 </html>
