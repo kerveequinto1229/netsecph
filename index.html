@@ -2,99 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACCESS GRANTED!</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { font-size: 1.5rem; }
-    .hidden { display: none; }
-    button { padding: 10px 20px; border: none; background: #841013; color: white; border-radius: 8px; cursor: pointer; margin-top: 10px; }
-    button:hover { background: #581113; }
-    input { padding: 8px; width: 100%; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; }
-  </style>
+  <title>Treasure Hunt Station</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="container">
-    <h2>Breach the Netsec x Eclypsium Portal to Register</h2>
-    <div id="station-form">
-      <h1>STAGE 1: 	<br>Authenticate Your Identity to Begin the Breach.</h1>
-      <label>Enter your Full Name:</label>
-      <input type="text" id="playerName" placeholder="Your name...">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-lg">
+    <h1 id="station-title" class="text-2xl font-bold mb-4">Treasure Hunt Station</h1>
+
+    <!-- Player Form -->
+    <div id="station-form" class="space-y-4">
+      <label class="block">
+        <span class="text-gray-700">Enter your Name/ID:</span>
+        <input id="playerName" type="text" class="mt-1 block w-full border rounded-md p-2"/>
+      </label>
+
       <div id="prev-code-section" class="hidden">
-        <label>Enter Breach Code:</label>
-        <input type="text" id="prevCode" placeholder="Previous code...">
+        <label class="block">
+          <span class="text-gray-700">Enter previous station code:</span>
+          <input id="prevCode" type="text" class="mt-1 block w-full border rounded-md p-2"/>
+        </label>
       </div>
-      <button onclick="startStation()">Start</button>
+
+      <button onclick="startStation()" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Start</button>
     </div>
 
-    <div id="question-section" class="hidden">
-      <h2 id="question-text"></h2>
-      <div id="options"></div>
-    </div>
-
-    <div id="result-section" class="hidden">
-      <h2>Congratulations!</h2>
-      <p>Your unlock code for the next station:</p>
-      <h3 id="unlock-code"></h3>
-    </div>
-  </div>
-
-  <div id="station4-result-section" class="hidden">
-      <h2>SYSTEM BREACHED!</h2>
-      <p>ead to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.</p>
-      
-    </div>
+    <!-- Question -->
+    <div id="question-container" class="hidden mt-6"></div>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const stationNumber = parseInt(urlParams.get('station')) || 1;
+    // Station-specific configuration
+    const stationConfig = {
+      1: {
+        title: "Station 1: The Beginning",
+        successMessage: "Correct! You unlocked the path to Station 2."
+      },
+      2: {
+        title: "Station 2: The Puzzle Chamber",
+        successMessage: "Well done! Proceed to Station 3."
+      },
+      3: {
+        title: "Station 3: The Hidden Passage",
+        successMessage: "Nice work! You may now continue to Station 4."
+      },
+      4: {
+        title: "Final Station: The Treasure",
+        successMessage: "Congratulations! You found the treasure 🎉"
+      }
+    };
 
-    const questionPools = {
+    // Questions per station (you can customize these)
+    const questions = {
       1: [
-        { q: "What is 2+2?", options: ["3","4","5"], answer: "4" },
-        { q: "What color is the sky?", options: ["Blue","Green","Red"], answer: "Blue" }
+        {q: "What is 2+2?", options: ["3","4","5"], answer: "4"},
+        {q: "Which is a fruit?", options: ["Carrot","Apple","Potato"], answer: "Apple"},
+        {q: "What color is the sky?", options: ["Blue","Red","Green"], answer: "Blue"}
       ],
       2: [
-        { q: "What is the capital of France?", options: ["Paris","Rome","Berlin"], answer: "Paris" },
-        { q: "Which is a fruit?", options: ["Carrot","Apple","Potato"], answer: "Apple" }
+        {q: "Capital of France?", options: ["Rome","Paris","Berlin"], answer: "Paris"},
+        {q: "Which is a mammal?", options: ["Shark","Whale","Octopus"], answer: "Whale"},
+        {q: "What is 10/2?", options: ["3","5","8"], answer: "5"}
       ],
       3: [
-        { q: "What is 5*3?", options: ["15","20","10"], answer: "15" },
-        { q: "Which is an animal?", options: ["Chair","Dog","Rock"], answer: "Dog" }
+        {q: "Largest planet?", options: ["Earth","Mars","Jupiter"], answer: "Jupiter"},
+        {q: "Opposite of hot?", options: ["Warm","Cold","Cool"], answer: "Cold"},
+        {q: "How many legs does a spider have?", options: ["6","8","10"], answer: "8"}
       ],
       4: [
-        { q: "What planet do we live on?", options: ["Mars","Earth","Venus"], answer: "Earth" },
-        { q: "What is H2O?", options: ["Water","Oxygen","Fire"], answer: "Water" }
+        {q: "Primary color?", options: ["Pink","Blue","Cyan"], answer: "Blue"},
+        {q: "How many days in a week?", options: ["5","7","9"], answer: "7"},
+        {q: "What is 3*3?", options: ["6","9","12"], answer: "9"}
       ]
     };
 
-    function shuffle(array) {
-      return array.sort(() => Math.random() - 0.5);
-    }
+    // Read ?station=N from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const stationNumber = parseInt(urlParams.get("station")) || 1;
 
-    async function generateHash(input) {
-      const msgUint8 = new TextEncoder().encode(input);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 4).toUpperCase();
-    }
+    // Update station title
+    document.getElementById("station-title").innerText = stationConfig[stationNumber].title;
 
-    // Show previous code field immediately if station > 1
+    // Show previous code input if not station 1
     if (stationNumber > 1) {
       document.getElementById("prev-code-section").classList.remove("hidden");
     }
 
+    // Hash generator (for unique codes)
+    async function generateHash(input) {
+      const msgUint8 = new TextEncoder().encode(input);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 6);
+    }
+
+    const hashCache = {};
+
     async function startStation() {
       const name = document.getElementById("playerName").value.trim();
-      if (!name) { alert("Please enter your full name"); return; }
+      if (!name) { alert("Please enter your name/ID"); return; }
 
       if (stationNumber > 1) {
         const enteredCode = document.getElementById("prevCode").value.trim();
         const expectedCode = "STN" + (stationNumber-1) + "-" + await generateHash(name + (stationNumber-1));
         if (enteredCode !== expectedCode) {
-          alert("Invalid breach code!");
+          alert("Invalid previous station code!");
           return;
         }
       }
@@ -104,36 +115,39 @@
     }
 
     function showQuestion(name) {
-      const pool = questionPools[stationNumber];
-      const randomQ = pool[Math.floor(Math.random() * pool.length)];
+      const qList = questions[stationNumber];
+      const q = qList[Math.floor(Math.random() * qList.length)];
+      const container = document.getElementById("question-container");
+      container.classList.remove("hidden");
+      container.innerHTML = `
+        <h2 class="text-lg font-bold mb-2">${q.q}</h2>
+        ${q.options.map(opt => `
+          <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100"
+            onclick="checkAnswer('${opt}','${q.answer}','${name}')">${opt}</button>
+        `).join("")}
+      `;
+    }
 
-      document.getElementById("question-text").innerText = randomQ.q;
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-      shuffle(randomQ.options).forEach(opt => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = async () => {
-          if (opt === randomQ.answer) {
-            const code = "STN" + stationNumber + "-" + await generateHash(name + stationNumber);
-            document.getElementById("question-section").classList.add("hidden");
-            document.getElementById("unlock-code").innerText = code;
-            document.getElementById("result-section").classList.remove("hidden");
+    async function checkAnswer(selected, correct, name) {
+      if (selected === correct) {
+        if (!hashCache[name + stationNumber]) {
+          hashCache[name + stationNumber] = await generateHash(name + stationNumber);
+        }
+        showCode(name);
+      } else {
+        alert("Wrong answer, try again!");
+      }
+    }
 
-            //if (stationNumber = 4) {
-            //  document.getElementById("station4-result-section").classList.remove("hidden");
-            //} else {
-             // document.getElementById("result-section").classList.remove("hidden");
-            //}
-            
-          } else {
-            alert("Wrong answer! Try again.");
-          }
-        };
-        optionsDiv.appendChild(btn);
-      });
-
-      document.getElementById("question-section").classList.remove("hidden");
+    function showCode(name) {
+      const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
+      const successMsg = stationConfig[stationNumber].successMessage;
+      document.getElementById("question-container").innerHTML = `
+        <h2 class="text-xl font-bold">${successMsg}</h2>
+        <p class="mt-2">Your unlock code is: 
+          <span class="font-mono bg-gray-200 p-1">${code}</span>
+        </p>
+      `;
     }
   </script>
 </body>
