@@ -147,7 +147,14 @@
     <h2 class="text-xl font-bold">${successMsg}</h2>
     <p class="mt-2 flex items-center">Copy the Breach Code to Advance: 
       <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2">${code}</span>
-      <button onclick="copyToClipboard('breachCode')" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Copy</button>
+      <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        <!-- Copy Icon (example SVG) -->
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
+        </svg>
+        <!-- Optional: "Copied!" text overlay -->
+        <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
+      </button>
     </p>
   `;
 }
@@ -160,31 +167,34 @@ function copyToClipboard(elementId) {
     return;
   }
 
-  // Create a temporary textarea element to hold the text
   const tempTextArea = document.createElement("textarea");
   tempTextArea.value = element.textContent;
   document.body.appendChild(tempTextArea);
-
-  // Select the text and copy it
   tempTextArea.select();
   document.execCommand("copy");
-
-  // Remove the temporary textarea
   document.body.removeChild(tempTextArea);
 
-  // Optional: Provide visual feedback to the user
-  const copyButton = element.nextElementSibling; // Assuming the button is right after the span
-  if (copyButton && copyButton.tagName === 'BUTTON') {
-    const originalText = copyButton.textContent;
-    copyButton.textContent = "Copied!";
-    copyButton.disabled = true; // Disable to prevent multiple clicks
-    setTimeout(() => {
-      copyButton.textContent = originalText;
-      copyButton.disabled = false;
-    }, 2000); // Revert text and enable after 2 seconds
-  }
+  // Provide visual feedback to the user
+  const copyButton = document.getElementById('copyButton');
+  const copiedFeedback = document.getElementById('copiedFeedback');
 
-  alert("Breach Code copied to clipboard!"); // Or use a less intrusive notification
+  if (copyButton && copiedFeedback) {
+    // Hide icon, show "Copied!"
+    copyButton.querySelector('svg').classList.add('opacity-0');
+    copiedFeedback.textContent = "Copied!";
+    copiedFeedback.classList.remove('opacity-0');
+    
+    // Disable button to prevent multiple clicks during feedback
+    copyButton.disabled = true;
+
+    setTimeout(() => {
+      // Show icon, hide "Copied!"
+      copyButton.querySelector('svg').classList.remove('opacity-0');
+      copiedFeedback.classList.add('opacity-0');
+      copiedFeedback.textContent = ""; // Clear text
+      copyButton.disabled = false; // Re-enable button
+    }, 2000); // Revert after 2 seconds
+  }
 }
 
   </script>
