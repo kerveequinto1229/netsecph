@@ -4,6 +4,23 @@
   <meta charset="UTF-8">
   <title>Digital Passport Check-in Guide</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* You might want to define the copy-button class in a style block if it's not handled by Tailwind directly */
+    .copy-button {
+        /* Add any specific styles for your minimal button here, if needed beyond Tailwind */
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0; /* Remove default padding */
+        display: inline-flex; /* To align the SVG properly */
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .copy-button svg {
+        transition: opacity 0.3s ease;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
   <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-lg">
@@ -54,66 +71,66 @@
     // Questions per station (you can customize these)
     const questions = {
       1: [
-        {q: "CHAIN & DECRYPT <br> Which of the following is a key principle of the 'Principle of Least Privilege'?", options: ["A. Granting all users administrative access to all system resources to ensure they can perform any task. ",
+        {q: "STEP 1 Question 1: Which of the following is a key principle of the 'Principle of Least Privilege'?", options: ["A. Granting all users administrative access to all system resources to ensure they can perform any task. ",
                                                                                                                                "B. Ensuring all users have the same level of access to simplify system administration.",
-                                                                                                                               "C. Providing users with only the minimum permissions necessary to perform their work.", 
+                                                                                                                               "C. Providing users with only the minimum permissions necessary to perform their work.",
                                                                                                                                "D. Allowing users to request any level of access they need, with no restrictions."], answer: "C. Providing users with only the minimum permissions necessary to perform their work."},
-        {q: "CHAIN & DECRYPT <br> A buffer overflow attack is a common vulnerability that exploits which of the following?", options: ["A. A failure to properly validate user input size, leading to data overwriting adjacent memory.",
+        {q: "STEP 1 Question 2: A buffer overflow attack is a common vulnerability that exploits which of the following?", options: ["A. A failure to properly validate user input size, leading to data overwriting adjacent memory.",
                                                                                                                                "B. The use of weak encryption algorithms for data storage.",
-                                                                                                                               "C. Exploiting a known backdoor left by a developer.", 
+                                                                                                                               "C. Exploiting a known backdoor left by a developer.",
                                                                                                                                "D. Incorrect configuration of user authentication protocols."], answer: "A. A failure to properly validate user input size, leading to data overwriting adjacent memory."},
-        {q: "CHAIN & DECRYPT <br> What is the primary purpose of a firewall in an operating system's security architecture?", options: ["A. To encrypt all network traffic leaving the system.",
+        {q: "STEP 1 Question 3: What is the primary purpose of a firewall in an operating system's security architecture?", options: ["A. To encrypt all network traffic leaving the system.",
                                                                                                                                "B. To filter incoming and outgoing network packets based on a set of security rules.",
-                                                                                                                               "C. To scan for and remove malware from the system's hard drive.", 
+                                                                                                                               "C. To scan for and remove malware from the system's hard drive.",
                                                                                                                                "D. To manage and allocate memory resources for running applications."], answer: "B. To filter incoming and outgoing network packets based on a set of security rules."},
-        {q: "CHAIN & DECRYPT <br> Which type of malware can spread from one computer to another without human intervention, often by exploiting network vulnerabilities?", options: ["A. Trojan Horse",
+        {q: "STEP 1 Question 4: Which type of malware can spread from one computer to another without human intervention, often by exploiting network vulnerabilities?", options: ["A. Trojan Horse",
                                                                                                                                "B. Spyware",
-                                                                                                                               "C. Rootkit", 
+                                                                                                                               "C. Rootkit",
                                                                                                                                "D. Worm"], answer: "D. Worm"}
       ],
       2: [
-        {q: "CHAIN & DECRYPT <br> In the context of operating system security, what is a zero-day vulnerability?", options: ["A. A vulnerability that has been publicly known for more than a year.",
+        {q: "STEP 2 Question 5: In the context of operating system security, what is a zero-day vulnerability?", options: ["A. A vulnerability that has been publicly known for more than a year.",
                                                                                                                                "B. A vulnerability that has been patched and is no longer a threat.",
-                                                                                                                               "C. A vulnerability that is known to attackers before the vendor or public is aware of it.", 
+                                                                                                                               "C. A vulnerability that is known to attackers before the vendor or public is aware of it.",
                                                                                                                                "D. A vulnerability that is only exploited on the first day of the month."], answer: "C. A vulnerability that is known to attackers before the vendor or public is aware of it."},
-        {q: "CHAIN & DECRYPT <br> What is the primary function of an Intrusion Detection System (IDS)?", options: ["A. To block malicious traffic in real-time.",
+        {q: "STEP 2 Question 6: What is the primary function of an Intrusion Detection System (IDS)?", options: ["A. To block malicious traffic in real-time.",
                                                                                                                                "B. To monitor network or system activity for malicious or policy-violating events and generate alerts.",
-                                                                                                                               "C. To authenticate users before they can access the system.", 
+                                                                                                                               "C. To authenticate users before they can access the system.",
                                                                                                                                "D. To automatically apply security patches to the operating system."], answer: "B. To monitor network or system activity for malicious or policy-violating events and generate alerts."},
-        {q: "CHAIN & DECRYPT <br> The use of strong passwords and multi-factor authentication is a countermeasure against which type of attack? ", options: ["A. Denial-of-Service (DoS) attacks",
+        {q: "STEP 2 Question 7: The use of strong passwords and multi-factor authentication is a countermeasure against which type of attack? ", options: ["A. Denial-of-Service (DoS) attacks",
                                                                                                                                "B. Phishing attacks",
-                                                                                                                               "C. Brute-force attacks", 
+                                                                                                                               "C. Brute-force attacks",
                                                                                                                                "D. SQL injection attacks"], answer: "C. Brute-force attacks"},
-        {q: "CHAIN & DECRYPT <br> What is the primary risk associated with a privilege escalation vulnerability?", options: ["A. Unauthorized users can gain access to the system.",
+        {q: "STEP 2 Question 8: What is the primary risk associated with a privilege escalation vulnerability?", options: ["A. Unauthorized users can gain access to the system.",
                                                                                                                                "B. A low-privileged user can gain higher-level permissions, such as administrator rights.",
-                                                                                                                               "C. An attacker can flood the network with traffic, causing a system to crash.", 
+                                                                                                                               "C. An attacker can flood the network with traffic, causing a system to crash.",
                                                                                                                                "D. The system's data can be corrupted or deleted by a worm."], answer: "B. A low-privileged user can gain higher-level permissions, such as administrator rights."}
       ],
       3: [
-        {q: "CHAIN & DECRYPT <br> Which of the following is a security benefit of using virtualization in an IT infrastructure?", options: ["A. It eliminates the need for any other security measures like firewalls or antivirus.",
+        {q: "STEP 3 Question 9: Which of the following is a security benefit of using virtualization in an IT infrastructure?", options: ["A. It eliminates the need for any other security measures like firewalls or antivirus.",
                                                                                                                                "B. It allows a single operating system to run multiple applications without any isolation.",
-                                                                                                                               "C. It isolates applications and operating systems from each other, containing the impact of a breach.", 
+                                                                                                                               "C. It isolates applications and operating systems from each other, containing the impact of a breach.",
                                                                                                                                "D. It makes it easier for an attacker to gain access to the entire system."], answer: "C. It isolates applications and operating systems from each other, containing the impact of a breach."},
-        {q: "CHAIN & DECRYPT <br> What is a security vulnerability that exists in a web browser's ability to execute unauthorized scripts on a user's machine?", options: ["A. Cross-Site Scripting (XSS)",
+        {q: "STEP 3 Question 10: What is a security vulnerability that exists in a web browser's ability to execute unauthorized scripts on a user's machine?", options: ["A. Cross-Site Scripting (XSS)",
                                                                                                                                "B. Denial-of-Service (DoS)",
-                                                                                                                               "C. Phishing", 
+                                                                                                                               "C. Phishing",
                                                                                                                                "D. Brute-force attack"], answer: "A. Cross-Site Scripting (XSS)"},
-        {q: "CHAIN & DECRYPT <br> What is a common method for an attacker to gain access to a system by tricking a user into opening a malicious file or clicking a malicious link?", options: ["A. SQL Injection",
+        {q: "STEP 3 Question 11: What is a common method for an attacker to gain access to a system by tricking a user into opening a malicious file or clicking a malicious link?", options: ["A. SQL Injection",
                                                                                                                                "B. Denial-of-Service (DoS) attack",
-                                                                                                                               "C. Phishing", 
+                                                                                                                               "C. Phishing",
                                                                                                                                "D. Port Scanning"], answer: "C. Phishing"},
-        {q: "CHAIN & DECRYPT <br> Which security practice involves restricting the permissions of a process to only those resources it needs to perform its function?", options: ["A. Process Isolation",
+        {q: "STEP 3 Question 12: Which security practice involves restricting the permissions of a process to only those resources it needs to perform its function?", options: ["A. Process Isolation",
                                                                                                                                "B. Memory Management",
-                                                                                                                               "C. System Hardening", 
+                                                                                                                               "C. System Hardening",
                                                                                                                                "D. Patch Management"], answer: "A. Process Isolation"}
       ],
       4: [
-        {q: "CHAIN & DECRYPT <br> A Rootkit is a type of malicious software that is designed to:", options: ["A. Encrypt a user's files and demand a ransom.",
+        {q: "STEP 4 Question 13: A Rootkit is a type of malicious software that is designed to:", options: ["A. Encrypt a user's files and demand a ransom.",
                                                                                                                                "B. Steal banking information and passwords.",
-                                                                                                                               "C. Gain root-level access and hide its presence on the system.", 
+                                                                                                                               "C. Gain root-level access and hide its presence on the system.",
                                                                                                                                "D. Spam a user's inbox with unwanted emails."], answer: "C. Gain root-level access and hide its presence on the system."},
         {
-    q: "CHAIN & DECRYPT <br> What is the main goal of a Denial-of-Service (DoS) attack?",
+    q: "STEP 4 Question 14: What is the main goal of a Denial-of-Service (DoS) attack?",
     options: [
       "A. To steal confidential data from a server.",
       "B. To make a machine or network resource unavailable to its intended users.",
@@ -123,7 +140,7 @@
     answer: "B. To make a machine or network resource unavailable to its intended users."
   },
   {
-    q: "CHAIN & DECRYPT <br> Which of the following is an example of a logical access control in an operating system?",
+    q: "STEP 4 Question 15: Which of the following is an example of a logical access control in an operating system?",
     options: [
       "A. A physical lock on a server room door.",
       "B. A biometric fingerprint scanner for a computer.",
@@ -133,7 +150,7 @@
     answer: "C. A user authentication system that requires a password."
   },
   {
-    q: "CHAIN & DECRYPT <br> In the context of security updates, what is a vulnerability patch?",
+    q: "STEP 4 Question 16: In the context of security updates, what is a vulnerability patch?",
     options: [
       "A. A program that scans for malware.",
       "B. A tool that encrypts user data.",
@@ -200,7 +217,8 @@
 
     async function checkAnswer(selected, correct, name) {
       if (selected === correct) {
-        if (!hashCache[name + stationNumber]) {
+        // Only generate hash if it's NOT the final station (station 4)
+        if (stationNumber !== 4 && !hashCache[name + stationNumber]) {
           hashCache[name + stationNumber] = await generateHash(name + stationNumber);
         }
         showCode(name);
@@ -210,24 +228,29 @@
     }
 
     function showCode(name) {
-  const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
-  const successMsg = stationConfig[stationNumber].successMessage;
+      const successMsg = stationConfig[stationNumber].successMessage;
+      let content = `<h2 class="text-xl font-bold">${successMsg}</h2>`;
 
-  document.getElementById("question-container").innerHTML = `
-    <h2 class="text-xl font-bold">${successMsg}</h2>
-    <p class="mt-2 flex items-center">Copy the Breach Code to Advance: 
-      <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2">${code}</span>
-      <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-        <!-- Copy Icon (example SVG) -->
-        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
-        </svg>
-        <!-- Optional: "Copied!" text overlay -->
-        <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
-      </button>
-    </p>
-  `;
-}
+      // Conditionally display the breach code and copy button for stations 1, 2, and 3
+      if (stationNumber < 4) { // This ensures it's shown for station 1, 2, 3
+        const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
+        content += `
+          <p class="mt-2 flex items-center">Copy the Breach Code to Advance:
+            <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2">${code}</span>
+            <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+              <!-- Copy Icon (example SVG) -->
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
+              </svg>
+              <!-- Optional: "Copied!" text overlay -->
+              <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
+            </button>
+          </p>
+        `;
+      }
+
+      document.getElementById("question-container").innerHTML = content;
+    }
 
 // New function to handle copying to clipboard
 function copyToClipboard(elementId) {
@@ -253,7 +276,7 @@ function copyToClipboard(elementId) {
     copyButton.querySelector('svg').classList.add('opacity-0');
     copiedFeedback.textContent = "Copied!";
     copiedFeedback.classList.remove('opacity-0');
-    
+
     // Disable button to prevent multiple clicks during feedback
     copyButton.disabled = true;
 
