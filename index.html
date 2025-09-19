@@ -1,68 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Netsec x Eclypsium Challenge</title>
+  <meta charset="UTF-8">
+  <title>Digital Passport Check-in Guide</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .copy-button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .copy-button svg {
+        transition: opacity 0.3s ease;
+    }
+    .step-text { display: inline; }
+  </style>
 </head>
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-lg">
+    <h1 id="station-title" class="text-1.5xl font-bold mb-4">Netsec Technologies Inc.</h1>
 
-  <div id="app" class="max-w-xl w-full p-6 bg-gray-800 rounded-lg shadow-lg">
-    <h1 class="text-2xl font-bold mb-4">Netsec x Eclypsium Portal</h1>
-    <div id="station-title" class="mb-4"></div>
-    <div id="question-container"></div>
+    <!-- Player Form -->
+    <div id="station-form" class="space-y-4">
+      <label class="block">
+        <span class="text-gray-700"><bold>Enter your full name indicated in your digital passport:</span>
+        <input id="playerName" type="text" class="mt-1 block w-full border rounded-md p-2"/>
+      </label>
+
+      <div id="prev-code-section" class="hidden">
+        <label class="block">
+          <span class="text-gray-700">Enter Breach Code:</span>
+          <input id="prevCode" type="text" class="mt-1 block w-full border rounded-md p-2"/>
+        </label>
+      </div>
+
+      <button onclick="startStation()" class="bg-red-900 text-white px-4 py-2 rounded-lg">Start</button>
+    </div>
+
+    <!-- Force Tailwind to keep text-red-900 -->
+    <span class="hidden text-red-900"></span>
+
+    <!-- Question -->
+    <div id="question-container" class="hidden mt-6"></div>
   </div>
 
   <script>
     const stationConfig = {
       1: {
-        title: `Station 1 <br><span class="step-text">STEP 1: Breach the Perimeter.</span>`,
-        successMessage: "ACCESS GRANTED, {name}! <br><br> Proceed deeper into the system."
+        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+                <span class="step-text">STEP 1: Authenticate Your Identity to Begin the Breach.</span>`,
+        successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
       },
       2: {
-        title: `Station 2 <br><span class="step-text">STEP 2: Crack the Cipher.</span>`,
-        successMessage: "CIPHER BROKEN, {name}! <br><br> You’ve unlocked the next layer."
+        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+                <span class="step-text">STEP 2: Authenticate Your Identity to Begin the Breach.</span>`,
+        successMessage: "BREACH CONFIRMED <br> Layer 2 Compromised"
       },
       3: {
-        title: `Station 3 <br><span class="step-text">STEP 3: Override the Controls.</span>`,
-        successMessage: "OVERRIDE COMPLETE, {name}! <br><br> Prepare for the final gate."
+        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+                <span class="step-text">STEP 3: Authenticate Your Identity to Begin the Breach.</span>`,
+        successMessage: "CRITICAL BREACH <br> Only 1 Gate Remain"
       },
       4: {
         title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
                 <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
-        successMessage: "YOU HAVE BREACHED THE SYSTEM, {name}! <br><br> Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code."
+        successMessage: `YOU HAVE BREACHED THE SYSTEM, {name}! <br><br>
+                         Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.`
       }
     };
 
     const questions = {
       1: [
-        { q: "What’s the default port for HTTPS?", options: ["80", "22", "443", "25"], answer: "443" }
+        {q: "CHAIN & DECRYPT <br> Which of the following is a key principle of the 'Principle of Least Privilege'?", options: ["A. Granting all users administrative access to all system resources to ensure they can perform any task. ",
+                                                                                                                               "B. Ensuring all users have the same level of access to simplify system administration.",
+                                                                                                                               "C. Providing users with only the minimum permissions necessary to perform their work.", 
+                                                                                                                               "D. Allowing users to request any level of access they need, with no restrictions."], answer: "C. Providing users with only the minimum permissions necessary to perform their work."}
       ],
       2: [
-        { q: "Which cipher is stronger?", options: ["DES", "AES", "ROT13", "Caesar"], answer: "AES" }
+        {q: "CHAIN & DECRYPT <br> In the context of operating system security, what is a zero-day vulnerability?", options: ["A. A vulnerability that has been publicly known for more than a year.",
+                                                                                                                               "B. A vulnerability that has been patched and is no longer a threat.",
+                                                                                                                               "C. A vulnerability that is known to attackers before the vendor or public is aware of it.", 
+                                                                                                                               "D. A vulnerability that is only exploited on the first day of the month."], answer: "C. A vulnerability that is known to attackers before the vendor or public is aware of it."}
       ],
       3: [
-        { q: "What does MFA stand for?", options: ["Multi-Factor Auth", "Master File Access", "Mainframe App", "Multi Fast Attack"], answer: "Multi-Factor Auth" }
+        {q: "CHAIN & DECRYPT <br> Which of the following is a security benefit of using virtualization in an IT infrastructure?", options: ["A. It eliminates the need for any other security measures like firewalls or antivirus.",
+                                                                                                                               "B. It allows a single operating system to run multiple applications without any isolation.",
+                                                                                                                               "C. It isolates applications and operating systems from each other, containing the impact of a breach.", 
+                                                                                                                               "D. It makes it easier for an attacker to gain access to the entire system."], answer: "C. It isolates applications and operating systems from each other, containing the impact of a breach."}
       ],
       4: [
-        { q: "Final Check — which layer is hardware security?", options: ["App Layer", "Hardware/Firmware", "Transport Layer", "Data Layer"], answer: "Hardware/Firmware" }
+        {q: "CHAIN & DECRYPT <br> A Rootkit is a type of malicious software that is designed to:", options: ["A. Encrypt a user's files and demand a ransom.",
+                                                                                                                               "B. Steal banking information and passwords.",
+                                                                                                                               "C. Gain root-level access and hide its presence on the system.", 
+                                                                                                                               "D. Spam a user's inbox with unwanted emails."], answer: "C. Gain root-level access and hide its presence on the system."}
       ]
     };
 
-    let stationNumber = 1;
+    const urlParams = new URLSearchParams(window.location.search);
+    const stationNumber = parseInt(urlParams.get("station")) || 1;
+
+    document.getElementById("station-title").innerHTML = stationConfig[stationNumber].title;
+    if (stationNumber > 1) {
+      document.getElementById("prev-code-section").classList.remove("hidden");
+    }
+
+    async function generateHash(input) {
+      const msgUint8 = new TextEncoder().encode(input);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 6);
+    }
+
     const hashCache = {};
 
-    function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, tag => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[tag]));
+    async function startStation() {
+      const name = document.getElementById("playerName").value.trim();
+      if (!name) { alert("Please enter your full name"); return; }
+
+      if (stationNumber > 1) {
+        const enteredCode = document.getElementById("prevCode").value.trim();
+        const expectedCode = "STN" + (stationNumber-1) + "-" + await generateHash(name + (stationNumber-1));
+        if (enteredCode !== expectedCode) {
+          alert("Invalid breach code!");
+          return;
+        }
+      }
+
+      document.getElementById("station-form").classList.add("hidden");
+      showQuestion(name);
     }
 
     function showQuestion(name) {
-      // hide only the step-text inside the station title
-      const titleEl = document.getElementById("station-title");
-      titleEl.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
 
       const qList = questions[stationNumber];
       const q = qList[Math.floor(Math.random() * qList.length)];
@@ -71,18 +145,30 @@
       container.innerHTML = `
         <h2 class="text-lg font-bold mb-2">${q.q}</h2>
         ${q.options.map(opt => `
-          <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100 hover:text-gray-900"
+          <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100"
             onclick="checkAnswer('${opt}','${q.answer}','${name}')">${opt}</button>
         `).join("")}
       `;
     }
 
-    function checkAnswer(selected, correct, name) {
+    async function checkAnswer(selected, correct, name) {
       if (selected === correct) {
+        if (stationNumber !== 4 && !hashCache[name + stationNumber]) {
+          hashCache[name + stationNumber] = await generateHash(name + stationNumber);
+        }
         showCode(name);
       } else {
-        alert("ACCESS DENIED — Try again.");
+        alert("Wrong answer, try again!");
       }
+    }
+
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
     function showCode(name) {
@@ -90,12 +176,10 @@
       const safeName = `<span class="font-semibold text-red-900">${escapeHTML(name)}</span>`;
       const successHTML = template.replace('{name}', safeName);
 
-      // render success message
       let content = `<h2 class="text-xl font-bold">${successHTML}</h2>`;
 
       if (stationNumber < 4) {
-        const code = "STN" + stationNumber + "-" + (hashCache[name + stationNumber] || Math.random().toString(36).substring(2,8).toUpperCase());
-        hashCache[name + stationNumber] = code.split("-")[1];
+        const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
         content += `
           <p class="mt-2 flex flex-col">
             <span class="flex items-center">
@@ -109,16 +193,14 @@
                 <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
               </button>
             </span>
-            <!-- ALERT text for stations 1–3 -->
             <span class="mt-1 text-xs text-red-900 font-mono italic">
               ALERT: Keep this code safe for the next stage
             </span>
           </p>
         `;
       } else {
-        // Station 4 (final) – proof of breach text
         content += `
-          <span class="mt-1 text-xs text-red-900 font-mono italic block">
+          <span class="mt-1 text-xs text-red-900 font-mono italic">
             Proof of breach - present this message at the booth to complete check-in
           </span>
         `;
@@ -127,21 +209,34 @@
       document.getElementById("question-container").innerHTML = content;
     }
 
-    function copyToClipboard(id) {
-      const codeEl = document.getElementById(id);
-      navigator.clipboard.writeText(codeEl.innerText).then(() => {
-        const feedback = document.getElementById("copiedFeedback");
-        feedback.textContent = "COPIED!";
-        feedback.classList.remove("opacity-0");
-        setTimeout(() => feedback.classList.add("opacity-0"), 1200);
-      });
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+
+      const tempTextArea = document.createElement("textarea");
+      tempTextArea.value = element.textContent;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempTextArea);
+
+      const copyButton = document.getElementById('copyButton');
+      const copiedFeedback = document.getElementById('copiedFeedback');
+
+      if (copyButton && copiedFeedback) {
+        copyButton.querySelector('svg').classList.add('opacity-0');
+        copiedFeedback.textContent = "Copied!";
+        copiedFeedback.classList.remove('opacity-0');
+        copyButton.disabled = true;
+
+        setTimeout(() => {
+          copyButton.querySelector('svg').classList.remove('opacity-0');
+          copiedFeedback.classList.add('opacity-0');
+          copiedFeedback.textContent = "";
+          copyButton.disabled = false;
+        }, 2000);
+      }
     }
-
-    // init
-    const name = prompt("Enter your agent name:");
-    document.getElementById("station-title").innerHTML = stationConfig[stationNumber].title;
-    showQuestion(name);
   </script>
-
 </body>
 </html>
