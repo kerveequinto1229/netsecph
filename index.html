@@ -18,9 +18,7 @@
     .copy-button svg {
         transition: opacity 0.3s ease;
     }
-    .step-text {
-        display: inline;
-    }
+    .step-text { display: inline; }
   </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -72,19 +70,15 @@
       4: {
         title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
                 <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
-        successMessage: `
-          <h2 class="text-xl font-bold">
-            YOU HAVE BREACHED THE SYSTEM, {name}! <br><br>
-            Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.
-          </h2>
-          <span class="mt-1 text-xs text-red-900 font-mono italic block">
-            Proof of breach - present this message at the booth to complete check-in
-          </span>
-        `
+        successMessage: `YOU HAVE BREACHED THE SYSTEM, {name}! <br><br>
+                         Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.
+                         <br><span class="mt-1 text-xs text-red-900 font-mono italic">
+                         ALERT: Keep this code safe for the next stage
+                         </span>`
       }
     };
 
-    // Questions per station (you can customize these)
+    // Questions per station
     const questions = {
       1: [
         {q: "CHAIN & DECRYPT <br> Which of the following is a key principle of the 'Principle of Least Privilege'?", options: ["A. Granting all users administrative access to all system resources to ensure they can perform any task. ",
@@ -145,36 +139,9 @@
                                                                                                                                "B. Steal banking information and passwords.",
                                                                                                                                "C. Gain root-level access and hide its presence on the system.", 
                                                                                                                                "D. Spam a user's inbox with unwanted emails."], answer: "C. Gain root-level access and hide its presence on the system."},
-        {
-          q: "CHAIN & DECRYPT <br> What is the main goal of a Denial-of-Service (DoS) attack?",
-          options: [
-            "A. To steal confidential data from a server.",
-            "B. To make a machine or network resource unavailable to its intended users.",
-            "C. To gain unauthorized access to a user's account.",
-            "D. To infect a system with a virus that spreads to other computers."
-          ],
-          answer: "B. To make a machine or network resource unavailable to its intended users."
-        },
-        {
-          q: "CHAIN & DECRYPT <br> Which of the following is an example of a logical access control in an operating system?",
-          options: [
-            "A. A physical lock on a server room door.",
-            "B. A biometric fingerprint scanner for a computer.",
-            "C. A user authentication system that requires a password.",
-            "D. A security guard monitoring a data center."
-          ],
-          answer: "C. A user authentication system that requires a password."
-        },
-        {
-          q: "CHAIN & DECRYPT <br> In the context of security updates, what is a vulnerability patch?",
-          options: [
-            "A. A program that scans for malware.",
-            "B. A tool that encrypts user data.",
-            "C. A piece of software designed to fix a security vulnerability.",
-            "D. A file that logs all user activity."
-          ],
-          answer: "C. A piece of software designed to fix a security vulnerability."
-        }
+        {q: "CHAIN & DECRYPT <br> What is the main goal of a Denial-of-Service (DoS) attack?", options: ["A. To steal confidential data from a server.","B. To make a machine or network resource unavailable to its intended users.","C. To gain unauthorized access to a user's account.","D. To infect a system with a virus that spreads to other computers."], answer: "B. To make a machine or network resource unavailable to its intended users."},
+        {q: "CHAIN & DECRYPT <br> Which of the following is an example of a logical access control in an operating system?", options: ["A. A physical lock on a server room door.","B. A biometric fingerprint scanner for a computer.","C. A user authentication system that requires a password.","D. A security guard monitoring a data center."], answer: "C. A user authentication system that requires a password."},
+        {q: "CHAIN & DECRYPT <br> In the context of security updates, what is a vulnerability patch?", options: ["A. A program that scans for malware.","B. A tool that encrypts user data.","C. A piece of software designed to fix a security vulnerability.","D. A file that logs all user activity."], answer: "C. A piece of software designed to fix a security vulnerability."}
       ]
     };
 
@@ -190,7 +157,7 @@
       document.getElementById("prev-code-section").classList.remove("hidden");
     }
 
-    // Hash generator (for unique codes)
+    // Hash generator
     async function generateHash(input) {
       const msgUint8 = new TextEncoder().encode(input);
       const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
@@ -217,8 +184,12 @@
       showQuestion(name);
     }
 
+    // Show question
     function showQuestion(name) {
-      document.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
+      // Hide only station header step text
+      const titleEl = document.getElementById("station-title");
+      titleEl.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
+
       const qList = questions[stationNumber];
       const q = qList[Math.floor(Math.random() * qList.length)];
       const container = document.getElementById("question-container");
@@ -244,12 +215,7 @@
     }
 
     function escapeHTML(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
     }
 
     function showCode(name) {
@@ -257,7 +223,7 @@
       const safeName = `<span class="font-semibold text-red-900">${escapeHTML(name)}</span>`;
       const successHTML = template.replace('{name}', safeName);
 
-      let content = `${successHTML}`;
+      let content = `<h2 class="text-xl font-bold">${successHTML}</h2>`;
 
       if (stationNumber < 4) {
         const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
@@ -286,10 +252,7 @@
 
     function copyToClipboard(elementId) {
       const element = document.getElementById(elementId);
-      if (!element) {
-        console.error("Element not found:", elementId);
-        return;
-      }
+      if (!element) return;
 
       const tempTextArea = document.createElement("textarea");
       tempTextArea.value = element.textContent;
@@ -300,13 +263,11 @@
 
       const copyButton = document.getElementById('copyButton');
       const copiedFeedback = document.getElementById('copiedFeedback');
-
       if (copyButton && copiedFeedback) {
         copyButton.querySelector('svg').classList.add('opacity-0');
         copiedFeedback.textContent = "Copied!";
         copiedFeedback.classList.remove('opacity-0');
         copyButton.disabled = true;
-
         setTimeout(() => {
           copyButton.querySelector('svg').classList.remove('opacity-0');
           copiedFeedback.classList.add('opacity-0');
