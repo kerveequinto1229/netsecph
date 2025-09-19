@@ -46,7 +46,7 @@
     </div>
 
     <!-- Force Tailwind to keep text-red-900 -->
-    <span class="hidden text-red-900"></span>
+<span class="hidden text-red-900"></span>
 
     <!-- Question -->
     <div id="question-container" class="hidden mt-6"></div>
@@ -56,29 +56,30 @@
     // Station-specific configuration
     const stationConfig = {
       1: {
-        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
-                <span class="step-text">STEP 1: Authenticate Your Identity to Begin the Breach.</span>`,
-        successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
-      },
-      2: {
-        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
-                <span class="step-text">STEP 2: Authenticate Your Identity to Begin the Breach.</span>`,
-        successMessage: "BREACH CONFIRMED <br> Layer 2 Compromised"
-      },
-      3: {
-        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
-                <span class="step-text">STEP 3: Authenticate Your Identity to Begin the Breach.</span>`,
-        successMessage: "CRITICAL BREACH <br> Only 1 Gate Remain"
-      },
-      4: {
-        title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
-                <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
-        successMessage: `YOU HAVE BREACHED THE SYSTEM, {name}! <br><br>
-                         Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.`
-      }
-    };
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">STEP 1: Authenticate Your Identity to Begin the Breach.</span>`,
+      successMessage: "INITIAL BREACH COMPLETE <br> First Code Cracked"
+    },
+    2: {
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">STEP 2: Authenticate Your Identity to Begin the Breach.</span>`,
+      successMessage: "BREACH CONFIRMED <br> Layer 2 Compromised"
+    },
+    3: {
+      title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+              <span class="step-text">STEP 3: Authenticate Your Identity to Begin the Breach.</span>`,
+      successMessage: "CRITICAL BREACH <br> Only 1 Gate Remain"
+    },
+    4: {
+  title: `Breach the Netsec x Eclypsium Portal to Check-in <br>
+          <span class="step-text">FINAL GATE DETECTED <br> STEP 4: Verify Credentials to Breach the Last Gate.</span>`,
+  successMessage: `YOU HAVE BREACHED THE SYSTEM, {name}! <br><br>
+                   Head to the Netsec Technologies Inc. x Eclypsium booth to unlock your final code.
+                   <br><span class="mt-1 text-xs text-red-900 font-mono italic">Proof of breach - present this message at the booth to complete check-in</span>`
+}
+  };
 
-    // Questions per station
+    // Questions per station (you can customize these)
     const questions = {
       1: [
         {q: "CHAIN & DECRYPT <br> Which of the following is a key principle of the 'Principle of Least Privilege'?", options: ["A. Granting all users administrative access to all system resources to ensure they can perform any task. ",
@@ -139,18 +140,36 @@
                                                                                                                                "B. Steal banking information and passwords.",
                                                                                                                                "C. Gain root-level access and hide its presence on the system.", 
                                                                                                                                "D. Spam a user's inbox with unwanted emails."], answer: "C. Gain root-level access and hide its presence on the system."},
-        {q: "CHAIN & DECRYPT <br> What is the main goal of a Denial-of-Service (DoS) attack?", options: ["A. To steal confidential data from a server.",
-                                                                                                        "B. To make a machine or network resource unavailable to its intended users.",
-                                                                                                        "C. To gain unauthorized access to a user's account.",
-                                                                                                        "D. To infect a system with a virus that spreads to other computers."], answer: "B. To make a machine or network resource unavailable to its intended users."},
-        {q: "CHAIN & DECRYPT <br> Which of the following is an example of a logical access control in an operating system?", options: ["A. A physical lock on a server room door.",
-                                                                                                                                     "B. A biometric fingerprint scanner for a computer.",
-                                                                                                                                     "C. A user authentication system that requires a password.",
-                                                                                                                                     "D. A security guard monitoring a data center."], answer: "C. A user authentication system that requires a password."},
-        {q: "CHAIN & DECRYPT <br> In the context of security updates, what is a vulnerability patch?", options: ["A. A program that scans for malware.",
-                                                                                                                 "B. A tool that encrypts user data.",
-                                                                                                                 "C. A piece of software designed to fix a security vulnerability.",
-                                                                                                                 "D. A file that logs all user activity."], answer: "C. A piece of software designed to fix a security vulnerability."}
+        {
+    q: "CHAIN & DECRYPT <br> What is the main goal of a Denial-of-Service (DoS) attack?",
+    options: [
+      "A. To steal confidential data from a server.",
+      "B. To make a machine or network resource unavailable to its intended users.",
+      "C. To gain unauthorized access to a user's account.",
+      "D. To infect a system with a virus that spreads to other computers."
+    ],
+    answer: "B. To make a machine or network resource unavailable to its intended users."
+  },
+  {
+    q: "CHAIN & DECRYPT <br> Which of the following is an example of a logical access control in an operating system?",
+    options: [
+      "A. A physical lock on a server room door.",
+      "B. A biometric fingerprint scanner for a computer.",
+      "C. A user authentication system that requires a password.",
+      "D. A security guard monitoring a data center."
+    ],
+    answer: "C. A user authentication system that requires a password."
+  },
+  {
+    q: "CHAIN & DECRYPT <br> In the context of security updates, what is a vulnerability patch?",
+    options: [
+      "A. A program that scans for malware.",
+      "B. A tool that encrypts user data.",
+      "C. A piece of software designed to fix a security vulnerability.",
+      "D. A file that logs all user activity."
+    ],
+    answer: "C. A piece of software designed to fix a security vulnerability."
+  }
       ]
     };
 
@@ -159,7 +178,7 @@
     const stationNumber = parseInt(urlParams.get("station")) || 1;
 
     // Update station title
-    document.getElementById("station-title").innerHTML = stationConfig[stationNumber].title;
+  document.getElementById("station-title").innerHTML = stationConfig[stationNumber].title;
 
     // Show previous code input if not station 1
     if (stationNumber > 1) {
@@ -193,25 +212,28 @@
       showQuestion(name);
     }
 
-    function showQuestion(name) {
-      // HIDE step text when question is shown
-      document.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
+    // Then, when you show the question, hide all step-text spans:
+  function showQuestion(name) {
+    // HIDE step text when question is shown
+    document.querySelectorAll('.step-text').forEach(el => el.style.display = 'none');
 
-      const qList = questions[stationNumber];
-      const q = qList[Math.floor(Math.random() * qList.length)];
-      const container = document.getElementById("question-container");
-      container.classList.remove("hidden");
-      container.innerHTML = `
-        <h2 class="text-lg font-bold mb-2">${q.q}</h2>
-        ${q.options.map(opt => `
-          <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100"
-            onclick="checkAnswer('${opt}','${q.answer}','${name}')">${opt}</button>
-        `).join("")}
-      `;
-    }
+    const qList = questions[stationNumber];
+    const q = qList[Math.floor(Math.random() * qList.length)];
+    const container = document.getElementById("question-container");
+    container.classList.remove("hidden");
+    container.innerHTML = `
+      <h2 class="text-lg font-bold mb-2">${q.q}</h2>
+      ${q.options.map(opt => `
+        <button class="block w-full text-left border rounded p-2 mb-2 hover:bg-gray-100"
+          onclick="checkAnswer('${opt}','${q.answer}','${name}')">${opt}</button>
+      `).join("")}
+    `;
+  }
+
 
     async function checkAnswer(selected, correct, name) {
       if (selected === correct) {
+        // Only generate hash if it's NOT the final station (station 4)
         if (stationNumber !== 4 && !hashCache[name + stationNumber]) {
           hashCache[name + stationNumber] = await generateHash(name + stationNumber);
         }
@@ -221,74 +243,89 @@
       }
     }
 
-    function escapeHTML(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-    }
+    // safe HTML escape
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
-    function showCode(name) {
-      const template = stationConfig[stationNumber].successMessage || "";
-      const safeName = `<span class="font-semibold text-red-900">${escapeHTML(name)}</span>`;
-      const successHTML = template.replace('{name}', safeName);
+function showCode(name) {
+  const template = stationConfig[stationNumber].successMessage || "";
+  // Strong + deep red color
+  const safeName = `<span class="font-semibold text-red-900">${escapeHTML(name)}</span>`;
+  const successHTML = template.replace('{name}', safeName);
 
-      let content = `<h2 class="text-xl font-bold">${successHTML}</h2>`;
+  let content = `<h2 class="text-xl font-bold">${successHTML}</h2>`;
 
-      if (stationNumber < 4) {
-        const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
-        content += `
-         <p class="mt-2 flex flex-col">
-            <span class="flex items-center">
-              Copy the Breach Code to Advance:
-              <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2 ml-2">${code}</span>
-              <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
-                </svg>
-                <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
-              </button>
-            </span>
+  if (stationNumber < 4) {
+    const code = "STN" + stationNumber + "-" + hashCache[name + stationNumber];
+    content += `
+     <p class="mt-2 flex flex-col">
+  <span class="flex items-center">
+    Copy the Breach Code to Advance:
+    <span id="breachCode" class="font-mono bg-gray-200 p-1 rounded mr-2 ml-2">${code}</span>
+    <button id="copyButton" onclick="copyToClipboard('breachCode')" class="copy-button relative text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 5H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v2M9 17v-5h5"/>
+      </svg>
+      <span id="copiedFeedback" class="absolute inset-0 flex items-center justify-center text-xs font-bold bg-white text-blue-600 opacity-0 transition-opacity duration-300"></span>
+    </button>
+  </span>
 
-            <!-- stations 1–3 note -->
-            <span class="mt-1 text-xs text-red-900 font-mono italic">
-              ALERT: Keep this code safe for the next stage
-            </span>
-          </p>
-        `;
-      } else {
-        // Station 4 note
-        content += `
-          <span class="mt-1 text-xs text-red-900 font-mono italic block">
-            Proof of breach - present this message at the booth to complete check-in
-          </span>
-        `;
-      }
+  <!-- subtle techy reminder -->
+  <span class="mt-1 text-xs text-red-900 font-mono italic">
+  ALERT: Keep this code safe for the next stage
+</span>
+</p>
+    `;
+  }
 
-      document.getElementById("question-container").innerHTML = content;
-    }
+  document.getElementById("question-container").innerHTML = content;
+}
 
-    function copyToClipboard(elementId) {
-      const element = document.getElementById(elementId);
-      if (!element) {
-        console.error("Element not found:", elementId);
-        return;
-      }
+// New function to handle copying to clipboard
+function copyToClipboard(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    console.error("Element not found:", elementId);
+    return;
+  }
 
-      const tempTextArea = document.createElement("textarea");
-      tempTextArea.value = element.textContent;
-      document.body.appendChild(tempTextArea);
-      tempTextArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempTextArea);
+  const tempTextArea = document.createElement("textarea");
+  tempTextArea.value = element.textContent;
+  document.body.appendChild(tempTextArea);
+  tempTextArea.select();
+  document.execCommand("copy");
+  document.body.removeChild(tempTextArea);
 
-      const copyButton = document.getElementById('copyButton');
-      const copiedFeedback = document.getElementById('copiedFeedback');
+  // Provide visual feedback to the user
+  const copyButton = document.getElementById('copyButton');
+  const copiedFeedback = document.getElementById('copiedFeedback');
 
-      if (copyButton && copiedFeedback) {
-        copyButton.querySelector('svg').classList.add('opacity-0');
-        copiedFeedback.textContent = "Copied!";
-        copiedFeedback.classList.remove('opacity-0
+  if (copyButton && copiedFeedback) {
+    // Hide icon, show "Copied!"
+    copyButton.querySelector('svg').classList.add('opacity-0');
+    copiedFeedback.textContent = "Copied!";
+    copiedFeedback.classList.remove('opacity-0');
+
+    // Disable button to prevent multiple clicks during feedback
+    copyButton.disabled = true;
+
+    setTimeout(() => {
+      // Show icon, hide "Copied!"
+      copyButton.querySelector('svg').classList.remove('opacity-0');
+      copiedFeedback.classList.add('opacity-0');
+      copiedFeedback.textContent = ""; // Clear text
+      copyButton.disabled = false; // Re-enable button
+    }, 2000); // Revert after 2 seconds
+  }
+}
+
+  </script>
+</body>
+</html>
